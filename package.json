@@ -12,7 +12,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "eslint": "node_modules/.bin/eslint src/"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,6 +34,7 @@
   },
   "lint-staged": {
     "*.{js, jsx}": [
+      "node_modules/.bin/eslint --max-warnings=0",
       "prettier --write",
       "git add"
     ]
