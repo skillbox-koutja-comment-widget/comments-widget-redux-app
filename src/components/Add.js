@@ -1,60 +1,72 @@
 import React from 'react'
-import {Add} from './components/Add'
-import {Comments} from './components/Comments'
-import './App.css'
+import PropTypes from 'prop-types'
 
-class App extends React.Component {
-    state = {
-        comments: null,
-        isLoading: false,
-    };
+class Add extends React.Component {
+  state = {
+    name: '',
+    text: '',
+    agree: false,
+  }
+  onBtnClickHandler = e => {
+    e.preventDefault()
+    const { name, text } = this.state
+    const date = new Date()
+    this.props.onAddComment({
+      id: +date,
+      author: name,
+      text,
+      date,
+    })
+  }
+  handleChange = e => {
+    const { id, value } = e.currentTarget
+    this.setState({ [id]: value })
+  }
+  handleCheckboxChange = e => {
+    this.setState({ agree: e.currentTarget.checked })
+  }
+  validate = () => {
+    const { name, text, agree } = this.state
+    return !!(name.trim() && text.trim() && agree)
+  }
 
-    componentDidMount() {
-        this.setState({isLoading: true});
-        setTimeout(() => {
-            let comments = localStorage.getItem('comments');
-            comments = JSON.parse(comments) || [];
-
-            this.setState({
-                isLoading: false,
-                comments: comments.map((item) => {
-                    item.date = new Date(item.date);
-                    return item;
-                })
-            })
-        }, 1000)
-    }
-
-    handleAddComment = data => {
-        const nextComments = [data, ...this.state.comments];
-        this.updateComments(nextComments)
-    };
-    handleRemoveComment = removingComment => {
-        const nextComments = this.state.comments.filter((comment) => {
-            return comment.id !== removingComment.id;
-        });
-        this.updateComments(nextComments)
-    };
-    updateComments = (comments) => {
-        localStorage.setItem('comments', JSON.stringify(comments));
-        this.setState({comments: comments});
-    };
-
-    render() {
-        const {comments, isLoading} = this.state;
-
-        return (
-            <React.Fragment>
-                <Add onAddComment={this.handleAddComment}/>
-                <h3>Комментарии</h3>
-                {isLoading && <p>Загружаю...</p>}
-                {Array.isArray(comments) && <Comments
-                    onRemoveComment={this.handleRemoveComment}
-                    data={comments}
-                />}
-            </React.Fragment>
-        )
-    }
+  render() {
+    const { name, text } = this.state
+    return (
+      <form className="add">
+        <input
+          id="name"
+          type="text"
+          onChange={this.handleChange}
+          className="add__author"
+          placeholder="Ваше имя"
+          value={name}
+        />
+        <textarea
+          id="text"
+          onChange={this.handleChange}
+          className="add__text"
+          placeholder="Текст комментария"
+          value={text}
+        />
+        <label className="add__checkrule">
+          <input type="checkbox" onChange={this.handleCheckboxChange} /> Я
+          согласен с правилами
+        </label>
+        <button
+          className="add__btn"
+          onClick={this.onBtnClickHandler}
+          disabled={!this.validate()}
+        >
+          Добавить комментарий
+        </button>
+      </form>
+    )
+  }
 }
 
-export default App
+Add.propTypes = {
+  onAddComment: PropTypes.func.isRequired,
+}
+
+export { Add }
