@@ -3,29 +3,32 @@ import PropTypes from 'prop-types'
 import { Article } from './Article'
 
 class Comments extends React.Component {
-  handleRemoveComment = (e) => {
+  handleRemoveComment = e => {
     this.props.onRemoveComment(e)
-  };
+  }
   renderComments = () => {
-    const { data } = this.props;
-    let template = null;
+    const { data } = this.props
+    let template = null
 
     if (data.length) {
-      template = data.map((item) => {
-        return <Article
+      template = data.map(item => {
+        return (
+          <Article
             onRemoveComment={this.handleRemoveComment}
             key={item.id}
             data={item}
-        />
+          />
+        )
       })
     } else {
       template = <p>Комментариев нет</p>
     }
 
     return template
-  };
+  }
+
   render() {
-    const { data } = this.props;
+    const { data } = this.props
 
     return (
       <div className="comments">
@@ -42,6 +45,6 @@ class Comments extends React.Component {
 
 Comments.propTypes = {
   data: PropTypes.array.isRequired,
-};
+}
 
 export { Comments }
