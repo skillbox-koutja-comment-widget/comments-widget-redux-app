@@ -1,36 +1,36 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { propChange } from '../actions/NewCommentActions'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { propChange } from '../actions/NewCommentActions';
 
 class Add extends Component {
   onBtnClickHandler = e => {
-    e.preventDefault()
-    const { name, text } = this.props
-    const date = new Date()
+    e.preventDefault();
+    const { name, text } = this.props;
+    const date = new Date();
     this.props.addCommentAction({
       id: +date,
       author: name,
       text,
       date,
-    })
-  }
+    });
+  };
 
   handleChange = e => {
-    const { id, value } = e.currentTarget
+    const { id, value } = e.currentTarget;
     this.props.propChangeAction({
       [id]: value,
-    })
-  }
+    });
+  };
 
   handleCheckboxChange = e => {
     this.props.propChangeAction({
       agree: e.currentTarget.checked,
-    })
-  }
+    });
+  };
 
   render() {
-    const { name, text, agree, disabled } = this.props
+    const { name, text, agree, disabled } = this.props;
     return (
       <form className="add">
         <input
@@ -64,7 +64,7 @@ class Add extends Component {
           Добавить комментарий
         </button>
       </form>
-    )
+    );
   }
 }
 
@@ -75,23 +75,22 @@ Add.propTypes = {
   disabled: PropTypes.bool.isRequired,
   addCommentAction: PropTypes.func.isRequired,
   propChangeAction: PropTypes.func.isRequired,
-}
+};
 
 // приклеиваем данные из store
 const mapStateToProps = store => {
-  console.log(store)
   return {
     newComment: store.newComment,
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     propChangeAction: props => dispatch(propChange(props)),
-  }
-}
+  };
+};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Add)
+)(Add);

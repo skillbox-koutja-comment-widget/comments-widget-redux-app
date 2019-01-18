@@ -1,14 +1,14 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { Article } from './Article'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Article } from './Article';
 
 class Comments extends React.Component {
   handleRemoveComment = e => {
-    this.props.onRemoveComment(e)
-  }
+    this.props.onRemoveComment(e);
+  };
   renderComments = () => {
-    const { data } = this.props
-    let template = null
+    const { data } = this.props;
+    let template = null;
 
     if (data.length) {
       template = data.map(item => {
@@ -18,17 +18,17 @@ class Comments extends React.Component {
             key={item.id}
             data={item}
           />
-        )
-      })
+        );
+      });
     } else {
-      template = <p>Комментариев нет</p>
+      template = <p>Комментариев нет</p>;
     }
 
-    return template
-  }
+    return template;
+  };
 
   render() {
-    const { data } = this.props
+    const { data } = this.props;
 
     return (
       <div className="comments">
@@ -39,12 +39,12 @@ class Comments extends React.Component {
           </strong>
         ) : null}
       </div>
-    )
+    );
   }
 }
 
 Comments.propTypes = {
   data: PropTypes.array.isRequired,
-}
+};
 
-export { Comments }
+export { Comments };
