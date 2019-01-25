@@ -4,6 +4,7 @@ import {
     GET_COMMENTS_REQUEST,
     GET_COMMENTS_SUCCESS,
 } from '../actions/CommentActions';
+import { stripHtmlFromText } from '../lib';
 
 const initialState = {
     data: [],
@@ -15,6 +16,8 @@ const saveComments = comments => {
 };
 
 const addComment = (comment, state) => {
+    comment.author = stripHtmlFromText(comment.author);
+    comment.text = stripHtmlFromText(comment.text);
     const nextComments = [comment, ...state.data];
     saveComments(nextComments);
     return nextComments;

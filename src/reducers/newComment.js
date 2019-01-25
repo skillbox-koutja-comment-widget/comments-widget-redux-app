@@ -2,10 +2,11 @@ import {
     CHANGE_PROP_NEW_COMMENT,
     RESET_NEW_COMMENT,
 } from '../actions/NewCommentActions';
+import { stripHtmlFromText } from '../lib';
 
 export const emptyComment = {
     id: null,
-    name: '',
+    author: '',
     text: '',
     agree: false,
     disabled: true,
@@ -14,16 +15,16 @@ export const emptyComment = {
 const initialState = emptyComment;
 
 const validate = state => {
-    const { name, text, agree } = state;
-    return !!(name.trim() && text.trim() && agree);
+    let { author, text, agree } = state;
+    author = stripHtmlFromText(author);
+    text = stripHtmlFromText(text);
+    return !!(author.trim() && text.trim() && agree);
 };
-
 const updateComment = (state, props) => {
     const nextState = {
         ...state,
         ...props,
     };
-
     nextState.disabled = !validate(nextState);
     return nextState;
 };
@@ -34,7 +35,6 @@ export function newCommentReducer(state = initialState, action) {
             return updateComment(state, action.payload);
         case RESET_NEW_COMMENT:
             return updateComment(state, emptyComment);
-
         default:
             return state;
     }

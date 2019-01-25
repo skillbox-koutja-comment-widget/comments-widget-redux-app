@@ -22,7 +22,7 @@ class App extends Component {
         return (
             <React.Fragment>
                 <Add
-                    name={newComment.name}
+                    author={newComment.author}
                     text={newComment.text}
                     agree={newComment.agree}
                     disabled={newComment.disabled}

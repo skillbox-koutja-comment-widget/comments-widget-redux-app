@@ -6,17 +6,14 @@ import { propChange } from '../actions/NewCommentActions';
 class Add extends Component {
     onBtnClickHandler = e => {
         e.preventDefault();
-        const { name, text } = this.props;
+        const { author, text } = this.props;
         const date = new Date();
         this.props.addCommentAction({
             id: +date,
-            author: this.stripHtmlFromText(name),
-            text: this.stripHtmlFromText(text),
+            author,
+            text,
             date,
         });
-    };
-    stripHtmlFromText = text => {
-        return text.replace(/<(?:.|\n)*?>/gm, '');
     };
     handleChange = e => {
         const { id, value } = e.currentTarget;
@@ -32,16 +29,16 @@ class Add extends Component {
     };
 
     render() {
-        const { name, text, agree, disabled } = this.props;
+        const { author, text, agree, disabled } = this.props;
         return (
             <form className="add">
                 <input
-                    id="name"
+                    id="author"
                     type="text"
                     onChange={this.handleChange}
                     className="add__author"
                     placeholder="Ваше имя"
-                    value={name}
+                    value={author}
                 />
                 <textarea
                     id="text"
@@ -71,7 +68,7 @@ class Add extends Component {
 }
 
 Add.propTypes = {
-    name: PropTypes.string.isRequired,
+    author: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired,
     agree: PropTypes.bool.isRequired,
     disabled: PropTypes.bool.isRequired,
