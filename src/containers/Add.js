@@ -10,12 +10,14 @@ class Add extends Component {
         const date = new Date();
         this.props.addCommentAction({
             id: +date,
-            author: name,
-            text,
+            author: this.stripHtmlFromText(name),
+            text: this.stripHtmlFromText(text),
             date,
         });
     };
-
+    stripHtmlFromText = text => {
+        return text.replace(/<(?:.|\n)*?>/gm, '');
+    };
     handleChange = e => {
         const { id, value } = e.currentTarget;
         this.props.propChangeAction({
